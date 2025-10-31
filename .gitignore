@@ -1,0 +1,5 @@
+.env
+main.py
+__pycache__/
+.vscode/
+faiss_index/
