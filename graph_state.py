@@ -16,6 +16,7 @@ class CombinedAgentState(TypedDict):
     receptionist_messages: Annotated[list, add_messages]
     clinical_messages: Annotated[list, add_messages]
     follow_up_messages: str
+    end_chat: bool = False
 
 
 class ClinicalAgentSchema(TypedDict):
@@ -27,7 +28,7 @@ class ClinicalAgentSchema(TypedDict):
 class ReceptionistAgentSchema(TypedDict):
     user_name: str
     database_query: bool = False
-    clinical_query: bool = False
+    # clinical_query: bool = False
 
 
 class DatabaseQueryResponse(TypedDict):
