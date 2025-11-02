@@ -19,7 +19,7 @@ def get_vector_store():
         print("Vector DB initialized.")
         return vector_store
     except Exception as e:
-        print("Vector not initailised , error :", e)
+        print("Vector not initailized , error :", e)
 
 
 def search_vector_store(query: str):

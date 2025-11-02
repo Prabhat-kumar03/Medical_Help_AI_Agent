@@ -3,6 +3,7 @@ from RAG.text_splitter import text_splitter
 from RAG.vector_store import get_vector_store
 from fastapi import UploadFile
 
+#uploading file 
 async def upload_pdf(file: UploadFile):
     try:
         pdf_data = await process_pdf(file)

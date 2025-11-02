@@ -12,4 +12,4 @@ async def process_pdf(file: UploadFile) -> str:
         print("PDF to String")
         return data
     except Exception as e:
-        print("Error---------->", e)
+        print("Error----------->", e)

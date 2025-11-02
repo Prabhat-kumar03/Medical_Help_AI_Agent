@@ -6,7 +6,7 @@ def text_splitter(text: str):
         chunks_array = []
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         for chunk in text_splitter.split_text(text):
-            print("------ Chunk:", chunk)
+            print("------- Chunk:", chunk)
             chunks_array.append(Document("".join(chunk)))
         print("Chunks created successfully.")
         return chunks_array

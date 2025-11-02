@@ -3,7 +3,6 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 def generate_embeddings():
     try:
-        # embeddings = FakeEmbeddings(size=1352)
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         return embeddings
     except Exception as e:

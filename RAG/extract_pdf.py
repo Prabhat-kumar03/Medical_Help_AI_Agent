@@ -13,4 +13,4 @@ def extract_pdf(pdf_path: str):
                 pdf_data += "".join(text)
             return pdf_data
     except Exception as e:
-        print(f"⚠️ Unexpected error: {e}")
+        print(f"⚠️ Unexpected error while loading pdf: {e}")
