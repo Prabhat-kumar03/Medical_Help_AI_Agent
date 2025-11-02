@@ -44,12 +44,12 @@ def take_user_input(state: CombinedAgentState) -> CombinedAgentState:
     }
 
 
-def route_database_call_or_clical_agent(state: CombinedAgentState):
+def route_database_call_or_take_user_input(state: CombinedAgentState):
     """Routing Node to check which tool to use"""
     if state.get("database_query") and state.get("user_name") != "":
         return "database_query"
-    elif state.get("clinical_query"):
-        return "clinical_agent"
+    # elif state.get("clinical_query"):
+    #     return "clinical_agent"
     else:
         return "take_user_input"
 
@@ -111,8 +111,12 @@ def handle_follow_up_question(state: CombinedAgentState) -> CombinedAgentState:
         receptionist_message.insert(0, SystemMessage(content=followup_question_prompt))
 
         response = llm.invoke(receptionist_message)
-
-        if response.get("follow_up_question"):
+        if response.get("clinical_agent"):
+            return {
+                "clinical_query": True,
+                "clinical_messages": str(response.get("follow_up_messages", "")),
+            }
+        elif response.get("follow_up_question"):
             print("Receptionist - ", response.get("follow_up_question") + "\n\n")
             return {
                 "follow_up_question": response.get("follow_up_question"),
@@ -120,11 +124,6 @@ def handle_follow_up_question(state: CombinedAgentState) -> CombinedAgentState:
                     content=response.get("follow_up_question")
                 ),
                 "follow_up_messages": str(response.get("follow_up_question", "")),
-            }
-        elif response.get("clinical_agent"):
-            return {
-                "clinical_query": True,
-                "clinical_messages": str(response.get("follow_up_messages", "")),
             }
         else:
             return {"user_query": state.get("user_query", "")}

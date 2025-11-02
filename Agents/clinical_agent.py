@@ -31,7 +31,7 @@ def set_system_prompt_clinic(state: CombinedAgentState) -> CombinedAgentState:
 
 def take_user_input_clinic(state: CombinedAgentState) -> CombinedAgentState:
     if state.get("follow_up_messages"):
-        message = f"Hi, {state["user_name"]} I am Clinical Agent. How can I help you today?\n I see you wish to know about {state.get('follow_up_messages','')}\n For such case please type yes or ask another query."
+        message = f"Hi, {state["user_name"]} I am Clinical Agent. How can I help you today?\n\nYou have been transfeere to mw with your last query as: {state.get('user_query','')}\n\nFor such case please type yes or ask another query."
         user_input = interrupt(message)
         if "yes" in user_input.lower():
             return {
@@ -53,7 +53,9 @@ def web_search_tool(user_query: str):
             api_key=os.environ.get("TAVILY_API_KEY"), max_results=1
         )
         ans = tavily_tool.invoke({"query": user_query})["results"][0]["content"]
+        
         return ans
+        
     except Exception as e:
         print("Error occured while performing web search - > ", e)
 
@@ -73,14 +75,14 @@ def nephrology_rag_tool(user_query: str) -> str:
             ]
         )
 
-        return rag_answer
+        return rag_answer 
     except Exception as e:
         print("Error occured while performing nephrology RAG tool - > ", e)
 
 
 def process_clinic_query(state: CombinedAgentState) -> CombinedAgentState:
-    
-    print("------ in process clinic query")
+
+    print("----- in process clinic query")
     tool_list = [web_search_tool, nephrology_rag_tool]
     llm = init_chat_model(model="gemini-2.5-flash", model_provider="google_genai")
     llm_with_tools = llm.bind_tools(tool_list)
@@ -110,12 +112,24 @@ def process_clinic_query(state: CombinedAgentState) -> CombinedAgentState:
             if tool.__name__ == tool_name:
                 tool = tool
                 break
-        
+        user_response: str = ""
+        append_str = "\n\nPlease reply with Yes to end the conversation or ask other questions if required. \n\nThank You."
+
         ans = tool(tool_args.get("user_query"))
         if tool.__name__ == "web_search_tool":
-            user = interrupt(f"""{ans}""")
+            user_response = interrupt(f"""{ans}""" + append_str)
         elif ans.get("insufficient_data") == True:
             web_ans = web_search_tool(tool_args.get("user_query"))
-            user = interrupt(f"""{str(web_ans)}""")
+            user_response = interrupt(f"""{str(web_ans)}""" + append_str)
         elif ans.get("insufficient_data") == False:
-            user = interrupt(f"""{str(ans.get("answer"))}""")
+            user_response = interrupt(f"""{str(ans.get("answer")) + append_str}""")
+
+        if user_response.lower == "yes":
+            return {"end_chat": True}
+        else:
+            return {"end_chat": False}
+
+
+def end_chat_or_continue(state: CombinedAgentState):
+    if not state.get("end_chat") :
+        return "process_clinic_query"
