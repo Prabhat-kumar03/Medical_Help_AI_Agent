@@ -4,7 +4,7 @@ import mysql.connector
 
 dotenv.load_dotenv(".env")
 
-
+# fetch data from Database
 def get_patient_by_name(patient_name: str):
     try:
         connection = mysql.connector.connect(
