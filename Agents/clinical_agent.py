@@ -80,7 +80,7 @@ def nephrology_rag_tool(user_query: str) -> str:
 
 def process_clinic_query(state: CombinedAgentState) -> CombinedAgentState:
     
-    print("----- in process clinic query")
+    print("------ in process clinic query")
     tool_list = [web_search_tool, nephrology_rag_tool]
     llm = init_chat_model(model="gemini-2.5-flash", model_provider="google_genai")
     llm_with_tools = llm.bind_tools(tool_list)
