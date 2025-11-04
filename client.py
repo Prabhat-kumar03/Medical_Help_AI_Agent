@@ -31,12 +31,11 @@ if user_input := st.chat_input("Type your message..."):
     with st.chat_message("assistant"):
         st.markdown(assistant_reply)
 
-# st.markdown(
-#     """
-#     ---
-#     **Tips:**
-#     - Type a message and press Enter to send.
-#     - The conversation persists in memory until you refresh the page.
-#     - Connect to your FastAPI `/answer` endpoint that returns a JSON: `{"response": "..."}`
-#     """
-# )
+st.markdown(
+    """
+    ---
+    **Notes:**
+    - This is just an AI model developed for the educational purpose.
+    - It is not verified to be used in Real world(Hospitals).
+    """
+)
