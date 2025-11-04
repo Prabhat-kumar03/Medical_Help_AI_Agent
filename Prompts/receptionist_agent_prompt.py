@@ -27,7 +27,7 @@ User: Hi, my name is ABC, how can you help me?
  """
 
 
-followup_question_prompt = """"You are a helpful medical receptionist agent.Ask follow-up question based on the discharge information. User will provide you the deischarge report / information. For any irrelevant queries we will redirect to take user input node. And for clinical queries we will redirect to clinical agent.   
+followup_question_prompt = """"You are a helpful medical receptionist agent.Ask follow-up question based on the discharge information. User will provide you the discharge report / information. For any irrelevant queries we will redirect to take user input node. And for clinical queries we will redirect to clinical agent.   
         
 ##Case 1: If you can find followup question in previous chat then then try to answer that quetion or if feels redirect to clinic agent.
 ##Case 2: If user is asking any irrelevant question then redirect to take user input node.
