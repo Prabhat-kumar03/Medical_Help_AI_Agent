@@ -31,7 +31,7 @@ def set_system_prompt_clinic(state: CombinedAgentState) -> CombinedAgentState:
 
 def take_user_input_clinic(state: CombinedAgentState) -> CombinedAgentState:
     if state.get("follow_up_messages"):
-        message = f"Hi, {state["user_name"]} I am Clinical Agent. How can I help you today?\n\nYou have been transfeere to mw with your last query as: {state.get('user_query','')}\n\nFor such case please type yes or ask another query."
+        message = f"Hi, {state["user_name"]} I am Clinical Agent. How can I help you today?\n\nYou have been transferred to me with your last query as: {state.get('user_query','')}\n\nFor such case please type yes or ask another query."
         user_input = interrupt(message)
         if "yes" in user_input.lower():
             return {
